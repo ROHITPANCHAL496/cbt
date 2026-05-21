@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ExamiPortal — Analysis</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<link rel="stylesheet" href="../css/analysis.css">
+</head>
+<body>
+
+<div id="app">
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-inner">
+      <a href="dashboard.html" class="logo">exami<span>portal</span></a>
+      <div class="header-title" id="header-test-title">Test Analysis</div>
+      <div class="header-actions">
+        <button class="btn-secondary" onclick="window.print()">⬇ Download PDF</button>
+        <a href="dashboard.html" class="btn-primary">← Dashboard</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="page-content" id="page-content">
+
+    <!-- Score Hero -->
+    <div class="score-hero">
+      <div class="score-card main-score">
+        <div class="score-label">Total Score</div>
+        <div class="score-val" id="total-score">--</div>
+        <div class="score-max">/ <span id="total-max">720</span></div>
+      </div>
+      <div class="score-card">
+        <div class="score-label">Correct</div>
+        <div class="score-val green" id="stat-correct">--</div>
+      </div>
+      <div class="score-card">
+        <div class="score-label">Wrong</div>
+        <div class="score-val red" id="stat-wrong">--</div>
+      </div>
+      <div class="score-card">
+        <div class="score-label">Skipped</div>
+        <div class="score-val gray" id="stat-skipped">--</div>
+      </div>
+      <div class="score-card">
+        <div class="score-label">Accuracy</div>
+        <div class="score-val blue" id="stat-accuracy">--</div>
+      </div>
+      <div class="score-card">
+        <div class="score-label">Rank</div>
+        <div class="score-val orange" id="stat-rank">--</div>
+      </div>
+      <div class="score-card">
+        <div class="score-label">Percentile</div>
+        <div class="score-val purple" id="stat-percentile">--</div>
+      </div>
+      <div class="score-card">
+        <div class="score-label">Time Taken</div>
+        <div class="score-val" id="stat-time">--</div>
+      </div>
+    </div>
+
+    <!-- Main Analysis Grid -->
+    <div class="analysis-grid">
+
+      <!-- ── Col 1 ── -->
+      <div class="col-main">
+
+        <!-- Subject Performance -->
+        <div class="card">
+          <div class="card-title">Subject-wise Performance</div>
+          <div class="subject-bars" id="subject-bars"></div>
+        </div>
+
+        <!-- Time Analysis -->
+        <div class="card">
+          <div class="card-title">⏱ Time Analysis — Per Question vs Class Average</div>
+          <div class="time-legend">
+            <span class="dot your-time"></span> Your Time
+            <span class="dot avg-time"></span> Class Avg
+          </div>
+          <div class="chart-wrap"><canvas id="time-chart"></canvas></div>
+          <div class="slow-qs-box" id="slow-qs-box" style="display:none">
+            <div class="slow-title">⚠ Questions where you spent significantly more time:</div>
+            <div id="slow-qs-list"></div>
+          </div>
+        </div>
+
+        <!-- Chapter Analysis -->
+        <div class="card">
+          <div class="card-title">📚 Chapter-wise Accuracy</div>
+          <div class="chapter-list" id="chapter-list"></div>
+        </div>
+
+        <!-- Weak Areas -->
+        <div class="card weak-areas">
+          <div class="card-title">🔴 Weak Chapters (Below 50% accuracy)</div>
+          <div id="weak-list"></div>
+        </div>
+
+      </div>
+
+      <!-- ── Col 2 ── -->
+      <div class="col-side">
+
+        <!-- Donut Chart -->
+        <div class="card">
+          <div class="card-title">Result Breakdown</div>
+          <div class="donut-wrap">
+            <canvas id="donut-chart"></canvas>
+            <div class="donut-center" id="donut-center">--</div>
+          </div>
+        </div>
+
+        <!-- Subject donut -->
+        <div class="card">
+          <div class="card-title">Score by Subject</div>
+          <div style="max-height:260px"><canvas id="subject-bar-chart"></canvas></div>
+        </div>
+
+        <!-- Question-wise table -->
+        <div class="card">
+          <div class="card-title">Option Distribution (Correct vs Selected)</div>
+          <div class="option-dist" id="option-dist"></div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Detailed Question Review -->
+    <div class="card q-review-card">
+      <div class="card-title">📋 Question-wise Review</div>
+      <div class="q-review-filters">
+        <button class="filter-btn active" onclick="filterQs('all', this)">All</button>
+        <button class="filter-btn" onclick="filterQs('correct', this)">✓ Correct</button>
+        <button class="filter-btn" onclick="filterQs('wrong', this)">✗ Wrong</button>
+        <button class="filter-btn" onclick="filterQs('skipped', this)">— Skipped</button>
+        <button class="filter-btn" onclick="filterQs('slow', this)">⏱ Slow</button>
+      </div>
+      <div class="q-review-table">
+        <div class="q-row q-row-header">
+          <div>#</div>
+          <div>Subject</div>
+          <div>Chapter</div>
+          <div>Your Ans</div>
+          <div>Correct</div>
+          <div>Marks</div>
+          <div>Your Time</div>
+          <div>Avg Time</div>
+          <div>Status</div>
+        </div>
+        <div id="q-review-body"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="../js/analysis.js"></script>
+</body>
+</html>

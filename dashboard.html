@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ExamiPortal — Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--primary:#4f46e5;--primary-light:#e0e7ff;--primary-dark:#3730a3;--success:#16a34a;--danger:#dc2626;--warning:#d97706;--gray-50:#f9fafb;--gray-100:#f3f4f6;--gray-200:#e5e7eb;--gray-500:#6b7280;--gray-700:#374151;--gray-900:#111827;--radius:12px;--shadow:0 1px 3px rgba(0,0,0,.08)}
+*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Nunito',sans-serif;background:var(--gray-100);color:var(--gray-900)}
+header{background:var(--primary-dark);color:white;padding:14px 28px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 8px rgba(0,0,0,.2);position:sticky;top:0;z-index:100}
+.logo{font-size:22px;font-weight:800}.logo span{color:#a5b4fc}
+.nav{display:flex;gap:24px;align-items:center}.nav a{color:rgba(255,255,255,.8);text-decoration:none;font-size:13px;font-weight:600;transition:color .15s}
+.nav a:hover,.nav a.active{color:white}
+.user-btn{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.1);padding:6px 14px;border-radius:50px;cursor:pointer;font-size:13px;font-weight:600}
+.user-avatar{width:28px;height:28px;border-radius:50%;background:#6366f1;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px}
+.page{max-width:1200px;margin:0 auto;padding:28px}
+.greeting{margin-bottom:28px}.greeting h2{font-size:24px;font-weight:800;color:var(--gray-900)}.greeting p{color:var(--gray-500);font-size:14px;margin-top:4px}
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px}
+.scard{background:white;border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);text-align:center}
+.scard .sv{font-size:26px;font-weight:800;margin-top:4px}.scard .sl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--gray-500)}
+.section-title{font-size:17px;font-weight:700;margin-bottom:16px;color:var(--gray-900)}
+.tests-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px;margin-bottom:32px}
+.test-card{background:white;border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:10px;transition:transform .2s;cursor:pointer}
+.test-card:hover{transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,0,0,.1)}
+.tc-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.tc-title{font-size:15px;font-weight:700;color:var(--gray-900);flex:1}
+.tc-type{font-size:11px;font-weight:700;padding:3px 10px;border-radius:50px;background:var(--primary-light);color:var(--primary-dark)}
+.tc-meta{display:flex;gap:14px;font-size:12px;color:var(--gray-500)}
+.tc-meta span strong{color:var(--gray-700)}
+.tc-footer{display:flex;align-items:center;justify-content:space-between}
+.tc-status.live{color:var(--success);font-size:12px;font-weight:700;display:flex;align-items:center;gap:4px}
+.tc-status.live::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--success);display:inline-block;animation:pulse 1.5s infinite}
+.tc-status.upcoming{color:var(--warning);font-size:12px;font-weight:600}
+.tc-status.completed{color:var(--gray-500);font-size:12px;font-weight:600}
+.btn-test{padding:8px 20px;background:var(--primary);color:white;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;text-decoration:none}
+.btn-test.completed{background:var(--gray-200);color:var(--gray-600)}
+.btn-test.review{background:var(--success)}
+.prev-tests{background:white;border-radius:var(--radius);padding:22px;box-shadow:var(--shadow)}
+.pt-row{display:grid;grid-template-columns:1fr 80px 80px 80px 80px 100px;gap:8px;padding:10px 0;border-bottom:1px solid var(--gray-100);font-size:13px;align-items:center}
+.pt-row-head{font-weight:700;font-size:11px;text-transform:uppercase;color:var(--gray-500);letter-spacing:.4px;border-bottom:2px solid var(--gray-200)}
+.badge{padding:3px 8px;border-radius:50px;font-size:11px;font-weight:700}
+.b-neet{background:var(--primary-light);color:var(--primary-dark)}
+.b-jee{background:#fef3c7;color:#92400e}
+.bar-mini{height:6px;background:var(--gray-200);border-radius:50px;overflow:hidden;margin-top:3px}
+.bar-mini-fill{height:100%;border-radius:50px;background:var(--primary)}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">exami<span>portal</span></div>
+  <nav class="nav">
+    <a href="dashboard.html" class="active">Home</a>
+    <a href="#">Tests</a>
+    <a href="#">Results</a>
+    <a href="#">Syllabus</a>
+  </nav>
+  <div class="user-btn"><div class="user-avatar" id="user-av">A</div><span id="user-nm">Student</span></div>
+</header>
+
+<div class="page">
+  <div class="greeting">
+    <h2>Good morning, <span id="greet-name">Student</span>! 👋</h2>
+    <p>You have <strong id="upcoming-count">0</strong> upcoming tests. Keep going!</p>
+  </div>
+
+  <div class="stats-row">
+    <div class="scard"><div class="sl">Tests Taken</div><div class="sv" style="color:var(--primary)" id="ds-taken">0</div></div>
+    <div class="scard"><div class="sl">Best Score</div><div class="sv" style="color:var(--success)" id="ds-best">—</div></div>
+    <div class="scard"><div class="sl">Avg Accuracy</div><div class="sv" style="color:var(--warning)" id="ds-acc">—</div></div>
+    <div class="scard"><div class="sl">Best Rank</div><div class="sv" style="color:var(--primary-dark)" id="ds-rank">—</div></div>
+  </div>
+
+  <div class="section-title">Available Tests</div>
+  <div class="tests-grid" id="tests-grid"><div style="color:var(--gray-500);font-size:13px">Loading tests...</div></div>
+
+  <div class="section-title">Previous Attempts</div>
+  <div class="prev-tests">
+    <div class="pt-row pt-row-head">
+      <div>Test</div><div>Score</div><div>Correct</div><div>Wrong</div><div>Rank</div><div>Action</div>
+    </div>
+    <div id="prev-attempts"><div style="color:var(--gray-500);font-size:13px;padding:14px 0">No previous attempts.</div></div>
+  </div>
+</div>
+
+<script>
+const API = "https://liproh.com/portal/api";
+const user = JSON.parse(localStorage.getItem("user_data") || '{"name":"Student","id":1,"exam_target":"NEET"}');
+const userId = user.id || 1;
+
+document.getElementById("greet-name").textContent = user.name || "Student";
+document.getElementById("user-nm").textContent = user.name || "Student";
+document.getElementById("user-av").textContent = (user.name||"S")[0].toUpperCase();
+
+async function loadDashboard() {
+  try {
+    const [testsRes, attemptsRes] = await Promise.all([
+      fetch(`${API}/attempt.php?action=tests&exam_type=${user.exam_target||'NEET'}`),
+      fetch(`${API}/attempt.php?action=student_attempts&user_id=${userId}`)
+    ]);
+    const { tests } = await testsRes.json().catch(() => ({ tests: [] }));
+    renderTests(tests || []);
+
+    // Attempts if endpoint exists
+    attemptsRes.json().then(data => renderAttempts(data.attempts || [])).catch(() => {});
+  } catch {
+    document.getElementById("tests-grid").innerHTML =
+      '<div style="color:var(--gray-500);font-size:13px">Could not connect to server. Please try again.</div>';
+  }
+}
+
+function renderTests(tests) {
+  const grid = document.getElementById("tests-grid");
+  if (!tests.length) { grid.innerHTML = '<div style="color:var(--gray-500)">No tests available.</div>'; return; }
+  grid.innerHTML = "";
+  let upcoming = 0;
+  tests.forEach(t => {
+    const now = new Date();
+    const start = t.start_time ? new Date(t.start_time) : null;
+    const end = t.end_time ? new Date(t.end_time) : null;
+    let status = "live", statusText = "Live Now";
+    if (start && start > now) { status = "upcoming"; statusText = "Starts " + start.toLocaleDateString(); upcoming++; }
+    if (end && end < now) { status = "completed"; statusText = "Completed"; }
+
+    const div = document.createElement("div");
+    div.className = "test-card";
+    div.innerHTML = `
+      <div class="tc-top">
+        <div class="tc-title">${t.title}</div>
+        <span class="tc-type">${t.test_type}</span>
+      </div>
+      <div class="tc-meta">
+        <span><strong>${t.duration_min}</strong> min</span>
+        <span><strong>${t.question_count||t.total_marks}</strong> qs</span>
+        <span><strong>${t.exam_type}</strong></span>
+        ${t.series_name ? `<span><strong>${t.series_name}</strong></span>` : ""}
+      </div>
+      <div class="tc-footer">
+        <div class="tc-status ${status}">${statusText}</div>
+        <a href="test.html?test_id=${t.id}" class="btn-test ${status !== 'live' ? 'completed' : ''}">
+          ${status === 'live' ? 'Start Test' : status === 'upcoming' ? 'Upcoming' : 'View Details'}
+        </a>
+      </div>`;
+    grid.appendChild(div);
+  });
+  document.getElementById("upcoming-count").textContent = upcoming;
+}
+
+function renderAttempts(attempts) {
+  const cont = document.getElementById("prev-attempts");
+  if (!attempts.length) return;
+  cont.innerHTML = "";
+  let best = 0, totalAcc = 0, bestRank = Infinity;
+  attempts.forEach(a => {
+    best = Math.max(best, parseFloat(a.score||0));
+    totalAcc += a.correct_count ? a.correct_count / (a.correct_count + a.wrong_count) * 100 : 0;
+    if (a.rank_overall) bestRank = Math.min(bestRank, a.rank_overall);
+    const pct = a.total_marks ? Math.round(a.score / a.total_marks * 100) : 0;
+    const div = document.createElement("div");
+    div.className = "pt-row";
+    div.innerHTML = `
+      <div><strong>${a.title||a.series_name}</strong><div class="bar-mini"><div class="bar-mini-fill" style="width:${pct}%"></div></div></div>
+      <div><strong>${a.score}</strong></div>
+      <div style="color:var(--success)">${a.correct_count}</div>
+      <div style="color:var(--danger)">${a.wrong_count}</div>
+      <div>${a.rank_overall ? '#'+a.rank_overall : '—'}</div>
+      <div><a href="analysis.html?attempt_id=${a.attempt_id}" class="btn-test review" style="font-size:11px;padding:6px 12px">View Analysis</a></div>`;
+    cont.appendChild(div);
+  });
+  document.getElementById("ds-taken").textContent = attempts.length;
+  document.getElementById("ds-best").textContent = best;
+  document.getElementById("ds-acc").textContent = (totalAcc / attempts.length).toFixed(1) + "%";
+  document.getElementById("ds-rank").textContent = bestRank !== Infinity ? "#" + bestRank : "—";
+}
+
+loadDashboard();
+</script>
+</body>
+</html>

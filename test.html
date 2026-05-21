@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ExamiPortal — Test</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/test.css">
+</head>
+<body>
+<div id="app">
+
+  <!-- ─── LOADING SCREEN ─── -->
+  <div id="loading-screen" class="fullscreen-center">
+    <div class="loader-logo">exami<span>portal</span></div>
+    <div class="loader-spinner"></div>
+    <div class="loader-text" id="loader-msg">Loading test...</div>
+  </div>
+
+  <!-- ─── INSTRUCTIONS SCREEN ─── -->
+  <div id="instructions-screen" class="hidden">
+    <div class="inst-header">
+      <div class="inst-logo">exami<span>portal</span></div>
+      <div class="lang-selector">
+        <label>Language:</label>
+        <select id="lang-select" onchange="changeLanguage(this.value)">
+          <option value="en">English</option>
+          <option value="hi">हिंदी</option>
+          <option value="gu">ગુજરાતી</option>
+        </select>
+      </div>
+    </div>
+    <div class="inst-body">
+      <div class="inst-title" id="test-title">NEET Mock Test</div>
+      <div class="inst-meta">
+        <span><i>⏱</i> <b id="inst-duration">180</b> Minutes</span>
+        <span><i>📝</i> <b id="inst-questions">180</b> Questions</span>
+        <span><i>⭐</i> <b id="inst-marks">720</b> Marks</span>
+        <span><i>➖</i> <b>-1</b> Negative</span>
+      </div>
+      <div class="inst-box">
+        <h3>General Instructions</h3>
+        <ol id="inst-list">
+          <li>This test paper contains <strong>180 questions</strong>.</li>
+          <li>Each correct answer carries <strong>4 marks</strong>.</li>
+          <li>Each wrong answer deducts <strong>1 mark</strong>.</li>
+          <li>Unattempted questions carry <strong>0 marks</strong>.</li>
+          <li>Do not close the browser window during the test.</li>
+          <li>Your responses are auto-saved after every answer.</li>
+          <li>You can mark questions for review and revisit them.</li>
+          <li>The test will auto-submit when time expires.</li>
+        </ol>
+      </div>
+      <div class="legend-box">
+        <div class="legend-title">Question Status Legend</div>
+        <div class="legend-items">
+          <span class="status-chip not-visited">Not Visited</span>
+          <span class="status-chip not-answered">Not Answered</span>
+          <span class="status-chip answered">Answered</span>
+          <span class="status-chip marked">Marked for Review</span>
+          <span class="status-chip answered-marked">Answered + Marked</span>
+        </div>
+      </div>
+      <div class="inst-agree">
+        <label><input type="checkbox" id="agree-check"> I have read all instructions and agree to the terms.</label>
+      </div>
+      <button class="btn-start" id="btn-start" onclick="startTest()" disabled>Start Test</button>
+    </div>
+  </div>
+
+  <!-- ─── MAIN TEST INTERFACE ─── -->
+  <div id="test-screen" class="hidden">
+
+    <!-- Top Bar -->
+    <div class="top-bar">
+      <div class="top-left">
+        <div class="logo-sm">exami<span>portal</span></div>
+        <div class="test-name" id="test-name-bar">NEET Mock Test</div>
+      </div>
+      <div class="top-center">
+        <div class="timer-box" id="timer-box">
+          <span id="timer-display">03:00:00</span>
+          <span class="timer-label">Remaining</span>
+        </div>
+      </div>
+      <div class="top-right">
+        <div class="student-info">
+          <div class="student-avatar" id="student-avatar">A</div>
+          <div>
+            <div class="student-name" id="student-name">Student</div>
+            <div class="student-roll" id="student-roll">Roll #001</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Subject Tabs -->
+    <div class="subject-tabs" id="subject-tabs"></div>
+
+    <!-- Main Content -->
+    <div class="test-content">
+
+      <!-- Left: Question Panel -->
+      <div class="question-panel" id="question-panel">
+        <div class="q-header">
+          <div class="q-number-badge">Q.<span id="q-current-num">1</span></div>
+          <div class="q-meta">
+            <span class="q-marks-pos">+<span id="q-marks-correct">4</span></span>
+            <span class="q-marks-neg">-<span id="q-marks-wrong">1</span></span>
+          </div>
+          <div class="lang-toggle-sm">
+            <button onclick="toggleLangPanel()" class="btn-lang-toggle" id="btn-lang-toggle">View in Hindi</button>
+          </div>
+        </div>
+
+        <!-- Bilingual Question Display -->
+        <div class="q-body">
+          <div class="q-text-primary" id="q-text-primary">Question text here...</div>
+          <div class="q-text-secondary hidden" id="q-text-secondary"></div>
+          <div class="q-image hidden" id="q-image">
+            <img id="q-img-el" src="" alt="Question diagram">
+          </div>
+        </div>
+
+        <!-- Options -->
+        <div class="options-grid" id="options-grid">
+          <div class="option-item" id="opt-A" onclick="selectOption('A')">
+            <span class="opt-label">A</span>
+            <span class="opt-text" id="opt-text-A">Option A</span>
+          </div>
+          <div class="option-item" id="opt-B" onclick="selectOption('B')">
+            <span class="opt-label">B</span>
+            <span class="opt-text" id="opt-text-B">Option B</span>
+          </div>
+          <div class="option-item" id="opt-C" onclick="selectOption('C')">
+            <span class="opt-label">C</span>
+            <span class="opt-text" id="opt-text-C">Option C</span>
+          </div>
+          <div class="option-item" id="opt-D" onclick="selectOption('D')">
+            <span class="opt-label">D</span>
+            <span class="opt-text" id="opt-text-D">Option D</span>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="q-actions">
+          <button class="btn-clear" onclick="clearResponse()">Clear</button>
+          <button class="btn-mark" onclick="markForReview()">Mark for Review &amp; Next</button>
+          <button class="btn-save-next" onclick="saveAndNext()">Save &amp; Next</button>
+        </div>
+      </div>
+
+      <!-- Right: Navigation Panel -->
+      <div class="nav-panel" id="nav-panel">
+        <div class="nav-stats">
+          <div class="stat-chip answered-chip"><span id="stat-answered">0</span><small>Answered</small></div>
+          <div class="stat-chip not-answered-chip"><span id="stat-not-answered">0</span><small>Not Ans.</small></div>
+          <div class="stat-chip marked-chip"><span id="stat-marked">0</span><small>Marked</small></div>
+          <div class="stat-chip not-visited-chip"><span id="stat-not-visited">0</span><small>Not Visit.</small></div>
+        </div>
+
+        <div class="nav-subject-label" id="nav-subject-label">Physics</div>
+        <div class="q-grid" id="q-grid"></div>
+
+        <div class="submit-area">
+          <div class="submit-warning">Review your answers before submitting.</div>
+          <button class="btn-submit" onclick="confirmSubmit()">Submit Test</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── SUBMIT CONFIRM MODAL ─── -->
+  <div id="submit-modal" class="modal-overlay hidden">
+    <div class="modal-box">
+      <div class="modal-title">Confirm Submission</div>
+      <div class="modal-stats">
+        <div><span class="ms-label">Answered</span><span class="ms-val green" id="m-answered">0</span></div>
+        <div><span class="ms-label">Not Answered</span><span class="ms-val red" id="m-not-answered">0</span></div>
+        <div><span class="ms-label">Marked</span><span class="ms-val orange" id="m-marked">0</span></div>
+        <div><span class="ms-label">Not Visited</span><span class="ms-val gray" id="m-not-visited">0</span></div>
+      </div>
+      <p class="modal-note">Are you sure you want to submit? You cannot change answers after submission.</p>
+      <div class="modal-buttons">
+        <button class="btn-cancel" onclick="closeModal()">Go Back</button>
+        <button class="btn-confirm-submit" onclick="submitTest()">Submit</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script src="../js/test-engine.js"></script>
+</body>
+</html>
